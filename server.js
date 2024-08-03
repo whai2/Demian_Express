@@ -5,6 +5,7 @@ import cors from "cors";
 import connectToMongoDB from "./src/db/connectToMongoDB.js";
 
 import authRoutes from "./src/routes/auth.routes.js";
+import messageRoutes from "./src/routes/message.routes.js";
 
 dotenv.config();
 const app = express();
@@ -19,6 +20,7 @@ app.use(
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/messages", messageRoutes);
 
 app.listen(PORT, () => {
   connectToMongoDB();

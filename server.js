@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 import connectToMongoDB from "./src/db/connectToMongoDB.js";
 
@@ -18,6 +19,7 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);

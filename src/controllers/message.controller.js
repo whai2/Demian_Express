@@ -10,10 +10,6 @@ export const sendMessage = async (req, res) => {
 			message,
 		});
 
-		if (newMessage) {
-			conversation.messages.push(newMessage._id);
-		}
-
 		await newMessage.save();
 
 		res.status(201).json(newMessage);

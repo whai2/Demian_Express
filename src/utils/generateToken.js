@@ -5,12 +5,13 @@ const generateTokenAndSetCookie = (userId, res) => {
 		expiresIn: "15d",
 	});
 
-	res.cookie("jwt", token, {
-		maxAge: 15 * 24 * 60 * 60 * 1000, 
-		httpOnly: true, 
-		sameSite: "strict", 
-		secure: process.env.NODE_ENV !== "development",
-	});
+	// res.cookie("jwt", token, {
+	// 	maxAge: 15 * 24 * 60 * 60 * 1000, 
+	// 	httpOnly: true, 
+	// 	sameSite: "strict", 
+	// 	secure: process.env.NODE_ENV !== "development",
+	// }); not use in react Native
+	return token;
 };
 
 export default generateTokenAndSetCookie;

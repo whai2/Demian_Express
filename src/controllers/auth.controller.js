@@ -27,12 +27,11 @@ export const signup = async (req, res) => {
 
     if (newUser) {
 
-			generateTokenAndSetCookie(newUser._id, res);
+			const token = generateTokenAndSetCookie(newUser._id, res);
 			await newUser.save();
 
 			res.status(201).json({
-				_id: newUser._id,
-				email: newUser.email,
+				token: token
 			});
 		} else {
 			res.status(400).json({ error: "Invalid user data" });
@@ -55,11 +54,10 @@ export const login = async (req, res) => {
 			return res.status(400).json({ error: "Invalid username or password" });
 		}
 
-		generateTokenAndSetCookie(user._id, res);
+		const token = generateTokenAndSetCookie(user._id, res);
 
 		res.status(200).json({
-			_id: user._id,
-			email: user.email,
+			token: token
 		});
 	} catch (error) {
 		console.log("Error in login controller", error.message);

@@ -18,6 +18,6 @@ export const s3Client = new S3Client({
   },
 });
 
-export const bucketName = "pickle-time-ducket"; // 스펠링 틀린 거 짜치네요...ㅠㅠ ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ
+export const bucketName = "pickle-time-ducket"; 
 const storage = multer.memoryStorage();
 export const upload = multer({ storage: storage });

@@ -7,6 +7,6 @@ import { upload } from "../storage/connectS3.js";
 const router = express.Router();
 
 router.get("/", protectRoute, getConversationList);
-router.post("/", upload.single("file"), makeNew);
+router.post("/", upload.single("file"), protectRoute, makeNew);
 
 export default router;

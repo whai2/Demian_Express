@@ -1,4 +1,5 @@
 import Message from "../models/message.model.js";
+import Conversation from "../models/conversation.model.js";
 
 //storage
 import { PutObjectCommand } from "@aws-sdk/client-s3";
@@ -8,17 +9,28 @@ import { v4 as uuidv4 } from "uuid";
 
 export const sendMessage = async (req, res) => {
 	try {
+    const senderId = req.user._id; // 로그인 상태에서 존재함
+    const { conversationId } = req.params; // params: "send/:id" routes에서
 		const { message } = req.body;
-		const senderId = req.user._id; // 로그인 상태에서 존재함
+
+    const conversation = await Conversation.findOne({
+      _id: conversationId,
+    }).populate("messages");
 
 		const newMessage = new Message({
 			senderId,
 			message,
 		});
 
-		await newMessage.save();
+    if (newMessage) {
+      conversation.messages.push(newMessage._id);
+    }
 
-		res.status(201).json(newMessage);
+		await Promise.all([conversation.save(), newMessage.save()]);
+
+    const messageDto = {...newMessage, fromMe: newMessage.senderId === senderId}
+
+		res.status(201).json(messageDto);
 	} catch (error) {
 		console.log("Error in sendMessage controller: ", error.message);
 		res.status(500).json({ error: "Internal server error" });
@@ -28,26 +40,32 @@ export const sendMessage = async (req, res) => {
 export const getMessages = async (req, res) => {
 	try {
 		const senderId = req.user._id;
+    const { conversationId } = req.params;
 
-		const conversation = await Message.aggregate([
+		const conversations = await Conversation.findOne({ _id: conversationId });
+
+    const messageIds = conversations.messages; // messages 배열에서 Message _id 추출
+
+    const messages = await Message.aggregate([
       {
         $match: {
-          id: senderId
+          _id: { $in: messageIds } // messages 배열의 _id들과 매칭
         }
       },
       {
-        $lookup: {
-          from: 'messages', 
-          localField: 'messages', 
-          foreignField: '_id', 
-          as: 'messages'
+        $project: {
+          // 필요한 필드를 포함하거나 제외할 수 있습니다. 예시:
+          message: 1,
+          sender: 1,
+          createdAt: 1,
+          fromMe: {
+            $cond: { if: { $eq: ["$senderId", senderId] }, then: true, else: false }
+          }
         }
       }
     ]);
-    
-    console.log(conversation);
 
-		res.status(200).json(conversation);
+		res.status(200).json({ messages : messages });
 	} catch (error) {
 		console.log("Error in getMessages controller: ", error.message);
 		res.status(500).json({ error: "Internal server error" });

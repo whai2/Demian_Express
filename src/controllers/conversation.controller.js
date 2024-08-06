@@ -11,7 +11,7 @@ export const getConversationList = async (req, res) => {
   try {
     const userId = req.user._id;
     
-    const conversation = await Conversation.aggregate([
+    const conversations = await Conversation.aggregate([
       {
         $match: {
           userId: userId
@@ -24,10 +24,16 @@ export const getConversationList = async (req, res) => {
           foreignField: '_id', 
           as: 'messages'
         }
+      },
+      {
+        $project: {
+          userId: 0 // userId 필드를 제외합니다.
+        }
       }
     ]);
 
-    console.log(conversation);
+    console.log(conversations);
+    res.status(200).json({ conversations: conversations });
   } catch (error) {
     console.log("Error in getMessages controller: ", error.message);
 		res.status(500).json({ error: "Internal server error" });
@@ -41,6 +47,7 @@ const getObjectUrl = (bucketName, region, objectKey) => {
 export const makeNew = async (req, res) => {
   try {
     const file = req.file;
+    const userId = req.user._id;
 
     if (!file) {
       return res.status(400).json({ message: "No file uploaded" });
@@ -62,13 +69,13 @@ export const makeNew = async (req, res) => {
 
     const objectUrl = getObjectUrl(bucketName, aws_key.region, params.Key);
     
-    // const newConversation = new Conversation({
-    //   userId: userId,
-    //   fileUrl: objectUrl,
-    //   title: fileName,
-    // });
+    const newConversation = new Conversation({
+      userId: userId,
+      fileUrl: objectUrl,
+      title: "새로 시작한 채팅",
+    });
 
-    // await newConversation.save();
+    await newConversation.save();
     res.status(200).json({ url: objectUrl });
   } catch (error) {
     console.error("Error generating presigned URL:", error);

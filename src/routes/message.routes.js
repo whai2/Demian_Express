@@ -6,8 +6,7 @@ import { upload } from "../storage/connectS3.js";
 
 const router = express.Router();
 
-router.get("/", protectRoute, getMessages);
-router.post("/send", protectRoute, sendMessage); // protectRoute에 의해 
-router.post("/send/file", upload.single("file"), protectRoute, sendFile);
+router.get("/:conversationId", protectRoute, getMessages);
+router.post("/:conversationId/send", protectRoute, sendMessage); // protectRoute에 의해 
 
 export default router;

@@ -50,7 +50,7 @@ export const sendMessage = async (req, res) => {
       const messageDto = { ...ragMessage._doc, fromMe: false };
 
       await Promise.all([conversation.save(), ragMessage.save()]);
-      console.log
+
       io.to(socketId).emit("newMessage", messageDto);
     }
   } catch (error) {
@@ -96,8 +96,8 @@ export const getMessages = async (req, res) => {
                   if: { $eq: ["$senderId", senderId] },
                   then: true,
                   else: false,
-                }
-              }
+                },
+              },
             },
           },
         },
@@ -105,7 +105,13 @@ export const getMessages = async (req, res) => {
     ]);
 
     const totalPages = Math.ceil(totalMessages / pageSize);
-    res.status(200).json({ messages: messagesObject, totalPages, currentPage: Number(page) });
+    res
+      .status(200)
+      .json({
+        messages: messagesObject,
+        totalPages,
+        currentPage: Number(page),
+      });
   } catch (error) {
     console.log("Error in getMessages controller: ", error.message);
     res.status(500).json({ error: "Internal server error" });

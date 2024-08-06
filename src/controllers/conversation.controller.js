@@ -28,8 +28,14 @@ export const getConversationList = async (req, res) => {
         }
       },
       {
+        $addFields: {
+          lastMessage: { $arrayElemAt: ['$messages', -1] } // 배열의 마지막 요소를 가져옵니다.
+        }
+      },
+      {
         $project: {
-          userId: 0 // userId 필드를 제외합니다.
+          userId: 0, 
+          messages: 0
         }
       }
     ]);

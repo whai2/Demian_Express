@@ -34,7 +34,6 @@ export const getConversationList = async (req, res) => {
       }
     ]);
 
-    console.log(conversations);
     res.status(200).json({ conversations: conversations });
   } catch (error) {
     console.log("Error in getMessages controller: ", error.message);

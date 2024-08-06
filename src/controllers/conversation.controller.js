@@ -1,5 +1,7 @@
 import Conversation from "../models/conversation.model.js";
 
+import { RagChat } from "../langchain/index.js";
+
 //storage
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { bucketName, s3Client, aws_key } from "../storage/connectS3.js";
@@ -76,6 +78,8 @@ export const makeNew = async (req, res) => {
     });
 
     await newConversation.save();
+    new RagChat(fileUrl);
+
     res.status(200).json({ url: objectUrl });
   } catch (error) {
     console.error("Error generating presigned URL:", error);

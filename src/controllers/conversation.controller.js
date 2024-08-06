@@ -1,4 +1,5 @@
 import Conversation from "../models/conversation.model.js";
+import Message from "../models/message.model.js";
 
 import { RagChat } from "../langchain/index.js";
 
@@ -31,6 +32,9 @@ export const getConversationList = async (req, res) => {
         $addFields: {
           lastMessage: { $arrayElemAt: ['$messages', -1] } // 배열의 마지막 요소를 가져옵니다.
         }
+      },
+      {
+        $sort: { updatedAt: -1 } // 생성 시간 순으로 정렬 (내림차순, 가장 최근 것이 앞쪽으로)
       },
       {
         $project: {
@@ -79,11 +83,21 @@ export const makeNew = async (req, res) => {
     const newConversation = new Conversation({
       userId: userId,
       fileUrl: objectUrl,
-      title: "새로 시작한 채팅",
+      title: `${file.originalname} 채팅`,
     });
 
-    await newConversation.save();
-    new RagChat(fileUrl);
+    const firstMessage = new Message({
+      senderId: userId,
+      message: "안녕하세요. 무엇을 도와드릴까요?",
+      chat: true,
+    })
+
+    if (firstMessage) {
+      newConversation.messages.push(firstMessage._id);
+    }
+
+    await Promise.all([newConversation.save(), firstMessage.save()]);
+    new RagChat(objectUrl);
 
     res.status(200).json({ url: objectUrl });
   } catch (error) {

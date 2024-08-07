@@ -25,29 +25,31 @@ https://github.com/whai2/Demian_ReactNative/
 ### 🔔 회원가입/로그인
   - 회원가입 후 로그인
     
-#### - 이메일 회원가입
+#### - 이메일 로그인 및 회원가입
 
-![이메일 회원가입](https://github.com/Splint-Final-Project/Pickle-Time-Frontend/assets/76935187/bb753c17-6f0a-449f-8bc6-44b7b3a667fb)
+![이메일 로그인](https://github.com/user-attachments/assets/869c1a0c-dbf9-41d6-b94c-b14af1cc905e)
+![이메일 회원가입](https://github.com/user-attachments/assets/187265ce-6242-4d23-bd80-57fea17de88c)
 
 
 ### 🔔 홈페이지
   - 채팅방: 파일 업로드 시, 해당 파일에 대한 RAG 채팅방 생성
   - 로그아웃 및 회원 탈퇴
     
-#### - 채팅 방
+#### - 채팅방
 
-![피클생성2](https://github.com/Splint-Final-Project/Pickle-Time-Frontend/assets/76935187/46ec11b9-5941-4e7d-9600-242ce2776bf3)
+![채팅방](https://github.com/user-attachments/assets/2ef5e003-882a-4bb4-9fcf-0680e4dc1b45)
 
 #### - 로그아웃 및 회원 탈퇴
 
-![찜하기](https://github.com/Splint-Final-Project/Pickle-Time-Frontend/assets/76935187/23d4ad9d-6f30-4ac8-82ed-b68a9c703cd6)
+![로그아웃 및 회원 탈퇴](https://github.com/user-attachments/assets/cba852de-5406-49a1-9cd9-7e8071b19c6e)
 
 ### 🔔 채팅
   - 파일 업로드 시, RAG 채팅 가능
     
-#### - 메세지 보내기
+#### - Rag 메세지 보내기
 
-![메세지](https://github.com/Splint-Final-Project/Pickle-Time-Frontend/assets/76935187/cf376c51-e39b-49f3-8385-1e67546a088d)
+![Rag 메세지 보내기](https://github.com/user-attachments/assets/4a70080f-8047-42a2-a605-64f07d17adb4)
+![Rag 메세지 보내기](https://github.com/user-attachments/assets/d1653d2f-fb2c-4c63-b4a8-710ee72b85c4)
 
 
 </br>
